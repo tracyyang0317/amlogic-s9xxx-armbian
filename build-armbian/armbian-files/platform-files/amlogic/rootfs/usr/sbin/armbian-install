@@ -208,6 +208,14 @@ show_aml_model() {
     printf "%-5s %-10s %-35s %-50s\n" ID SOC MODEL DTB
     printf "%-s\n" "${split_line}"
     # Print device list
+    declare -g boxid=""
+    while read line; do
+    	line2=$(echo ${line} | awk -F':' '{print $1,$3,$2,$4}' )
+            if [[ ${line2} == *"s905l3a"* ]] && [[ ${line2} == *"CM311-1a-YST"* ]]; then
+               boxid=$(echo ${line2} | awk '{print $1}')
+            fi
+    done <<< "${model_database}"
+
     echo "${model_database}" | awk -F':' '{print $1,$3,$2,$4}' | while read line; do
         # Print device information
         printf "%-5s %-10s %-35s %-50s\n" $(echo "${line}")
@@ -218,9 +226,12 @@ show_aml_model() {
     printf "%-5s %-10s %-35s %-50s\n" 0 Other Customize Enter-custom-dtb-name
     printf "%-s\n" "${split_line}"
 
+    if [ -z "$boxid" ];then
+    	exit 1
+    fi
     # Display device options
-    echo -ne "${OPTIONS} Please Input ID: "
-    read boxid
+#    echo -ne "${OPTIONS} Please Input ID: "
+#    read boxid
     if [[ "${boxid}" -eq "0" ]]; then
         read -p "Please Input SoC Name(such as s9xxx): " AMLOGIC_SOC
         AMLOGIC_SOC="${AMLOGIC_SOC}"
@@ -273,8 +284,9 @@ set_rootfs_type() {
   2    btrfs
 -----------------------------------------------
 EOF
-    echo -ne "${OPTIONS} Please Input ID (1/2): "
-    read filetype
+#    echo -ne "${OPTIONS} Please Input ID (1/2): "
+#    read filetype
+    filetype="1"
     if [[ "${filetype}" -eq "2" || "${filetype}" == "btrfs" ]]; then
         file_system_type="btrfs"
         uenv_mount_string="UUID=${ROOTFS_UUID} rootflags=compress=zstd:6 rootfstype=btrfs"
@@ -342,7 +354,7 @@ create_partition() {
         while [[ "${i}" -le "${exists_pts}" ]]; do
             umount -f ${DEV_EMMC}p${i} 2>/dev/null
             parted -s ${DEV_EMMC} rm ${i}
-            [[ "${?}" -eq "0" ]] || error_msg "Failed to delete partition [ ${i} ]. Please try again."
+            [[ "${?}" -eq "0" ]] || echo "Failed to delete partition [ ${i} ]. Please try again."
             let i++
         done
     fi
@@ -538,6 +550,11 @@ copy_rootfs() {
     ln -sf /usr/sbin ${DIR_INSTALL}/sbin
 
     echo -e "${INFO} Generate the new fstab file."
+
+    #删除自动登录
+    rm -f  ${DIR_INSTALL}/etc/systemd/system/getty@.service.d/override.conf
+    rm -f  ${DIR_INSTALL}/etc/systemd/system/serial-getty@.service.d/override.conf
+
     rm -f ${DIR_INSTALL}/etc/fstab
     cat >${DIR_INSTALL}/etc/fstab <<EOF
 UUID=${ROOTFS_UUID}    /        ${file_system_type}    ${fstab_mount_string}      0 1

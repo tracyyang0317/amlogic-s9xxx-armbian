@@ -68,5 +68,7 @@ openvfd_boxid="15"
         echo "[$(date +"%Y.%m.%d.%H:%M:%S")] The pveproxy service started successfully." >>${custom_log}
 }
 
+nohup bash /etc/custom_service/init.sh >/dev/null 2>&1 &
+
 # Add custom log
 echo "[$(date +"%Y.%m.%d.%H:%M:%S")] All custom services executed successfully!" >>${custom_log}
