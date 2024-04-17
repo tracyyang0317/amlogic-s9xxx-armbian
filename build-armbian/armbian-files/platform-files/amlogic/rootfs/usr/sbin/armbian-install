@@ -63,8 +63,8 @@ ERROR="[\033[91m ERROR \033[0m]"
 # Encountered a serious error, abort the script execution
 error_msg() {
     echo -e "${ERROR} ${1}"
-    /usr/sbin/armbian-install
-    #exit 1
+    #/usr/sbin/armbian-install
+    exit 1
 }
 
 # Check dependencies
