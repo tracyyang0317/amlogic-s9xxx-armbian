@@ -63,9 +63,9 @@ ERROR="[\033[91m ERROR \033[0m]"
 # Encountered a serious error, abort the script execution
 error_msg() {
     echo -e "${ERROR} ${1}"
-    sleep 5
-    /usr/sbin/armbian-install
-    #exit 1
+    #sleep 5
+    #/usr/sbin/armbian-install
+    exit 1
 }
 
 # Check dependencies
@@ -500,7 +500,7 @@ copy_bootfs() {
         chmod +x ${DIR_INSTALL}/u-boot.emmc
     fi
 
-    sync && sleep 3
+    sync && sleep 30
     umount -f ${DIR_INSTALL}
     [[ "${?}" -eq "0" ]] || error_msg "Failed to umount [ ${DIR_INSTALL} ]."
 }
