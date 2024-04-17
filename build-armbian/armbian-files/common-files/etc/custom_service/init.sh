@@ -1,12 +1,17 @@
 #!/bin/bash
 
-ping -c 1 www.baidu.com
-if [[ $? -ne 0 ]]; then
-	echo "network  failes!"
-	exit 1
-fi
+while true
+do
+    ping -c 1 www.baidu.com
+    if [[ $? -eq 0 ]]; then
+    	echo "network ok"
+    	break
+    fi
+    sleep 2
+done
 
-sleep 50
+
+
 
 mkdir -p /usr/local/bin/
 
