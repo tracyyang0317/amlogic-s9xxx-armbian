@@ -500,9 +500,16 @@ copy_bootfs() {
         chmod +x ${DIR_INSTALL}/u-boot.emmc
     fi
 
-    sync && sleep 30
-    umount -f ${DIR_INSTALL}
-    [[ "${?}" -eq "0" ]] || error_msg "Failed to umount [ ${DIR_INSTALL} ]."
+    while true
+    do
+          sync && sleep 30
+          umount -f ${DIR_INSTALL}
+          if [[ "${?}" -eq "0" ]] ;then
+            break
+          fi
+    done
+
+    #[[ "${?}" -eq "0" ]] || error_msg "Failed to umount [ ${DIR_INSTALL} ]."
 }
 
 # Copy rootfs partition files
