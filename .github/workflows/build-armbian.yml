@@ -276,7 +276,7 @@ jobs:
           df -hT ${PWD}
           git clone -q --single-branch --depth=1 --branch=main https://github.com/tracyyang0317/build.git build
           ln -sf /builder/build ${GITHUB_WORKSPACE}/build
-          ln -sf /builder/build /home/runner/work/_actions/tracyyang0317/amlogic-s9xxx-armbian/main/build
+          ln -sf /builder/build /home/runner/work/_actions/tracyyang0317/amlogic-s9xxx-armbian/N1/build
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile Armbian [ ${{ inputs.set_release }} ]
