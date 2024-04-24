@@ -314,7 +314,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Rebuild Armbian
-        uses: tracyyang0317/amlogic-s9xxx-armbian@main
+        uses: tracyyang0317/amlogic-s9xxx-armbian@N1
         if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
         with:
           build_target: armbian
