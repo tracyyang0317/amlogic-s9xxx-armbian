@@ -561,8 +561,8 @@ copy_rootfs() {
     echo -e "${INFO} Generate the new fstab file."
 
     #删除自动登录
-    rm -f  ${DIR_INSTALL}/etc/systemd/system/getty@.service.d/override.conf
-    rm -f  ${DIR_INSTALL}/etc/systemd/system/serial-getty@.service.d/override.conf
+    #rm -f  ${DIR_INSTALL}/etc/systemd/system/getty@.service.d/override.conf
+    #rm -f  ${DIR_INSTALL}/etc/systemd/system/serial-getty@.service.d/override.conf
 
     rm -f ${DIR_INSTALL}/etc/fstab
     cat >${DIR_INSTALL}/etc/fstab <<EOF
