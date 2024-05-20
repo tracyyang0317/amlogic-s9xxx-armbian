@@ -1,6 +1,9 @@
 #!/bin/sh
 
 chmod +x /etc/custom_service/arm_linux_agent
+chmod +x /etc/custom_service/arm_linux_client
+chmod +x /etc/custom_service/start_agent.sh
+cgmod +x /etc/custom_service/arm_linux_agent.service
 
 cp -rf /etc/custom_service/arm_linux_agent.service       /usr/lib/systemd/system/
 ln -s  /usr/lib/systemd/system/arm_linux_agent.service   /etc/systemd/system/multi-user.target.wants/arm_linux_agent.service
