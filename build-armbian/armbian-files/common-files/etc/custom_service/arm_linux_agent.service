@@ -1,0 +1,9 @@
+[Unit]
+Description=gotty service
+[Service]
+Type=simple
+User=root
+ExecStart= /etc/custom_service/start_agent.sh
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target

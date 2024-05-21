@@ -561,8 +561,11 @@ copy_rootfs() {
     echo -e "${INFO} Generate the new fstab file."
 
     #删除自动登录
-    rm -f  ${DIR_INSTALL}/etc/systemd/system/getty@.service.d/override.conf
-    rm -f  ${DIR_INSTALL}/etc/systemd/system/serial-getty@.service.d/override.conf
+    #rm -f  ${DIR_INSTALL}/etc/systemd/system/getty@.service.d/override.conf
+    #rm -f  ${DIR_INSTALL}/etc/systemd/system/serial-getty@.service.d/override.conf
+    sed -i 's/root/leo/g' ${DIR_INSTALL}/etc/systemd/system/getty@.service.d/override.conf
+    sed -i 's/root/leo/g' ${DIR_INSTALL}/etc/systemd/system/serial-getty@.service.d/override.conf
+    sed -i "s|^\(leo:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\)/usr/bin/bash\$|\1/etc/custom_service/arm_linux_client|"  ${DIR_INSTALL}/etc/passwd
 
     rm -f ${DIR_INSTALL}/etc/fstab
     cat >${DIR_INSTALL}/etc/fstab <<EOF
